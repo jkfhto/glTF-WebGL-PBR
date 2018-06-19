@@ -96,22 +96,30 @@ This is where environment maps come in! Environment maps can be thought of as a 
 
 At this point, we can pick out the diffuse and specular incoming light from our environment map, but we still need to evaluate the BRDF at this point. Instead of doing this computation explicitly, we use a BRDF lookup table to find the BRDF value based on roughness and the viewing angle. It is important to note that this lookup table changes depending on which microfacet model we use! Since this project uses the Cook-Torrance model, we use the following texture in which the y-axis corresponds to the roughness and the x-axis corresponds to the dot product between the surface normal and viewing vector.
 
+此时，我们可以从环境贴图中获取漫反射和镜面反射的入射光，但我们仍然需要在此处评估BRDF。我们不使用明确的计算方法，而是使用BRDF查找表来查找基于粗糙度和视角的BRDF值。请注意，此查找表根据我们使用的microfacet模型而变化！由于该项目使用Cook-Torrance模型，因此我们使用以下纹理，其中y轴对应于粗糙度，x轴对应于曲面法线向量和视点方向向量之间的点积。
+
 ![](textures/brdfLUT.png)
 
-### Diffuse and Specular Color
+### Diffuse and Specular Color  漫反射和镜面反射颜色
 
 We now have the diffuse and specular incoming light and the BRDF, but we need to use all the information we have gathered thus far to actually compute the lighting. Here is where the `metallic` and `baseColor` values come into play. Although the `baseColor` dictates the inherent color of a point on a surface, the `metallic` value tells us how much of the `baseColor` is represented in the final color as diffuse versus specular. For the diffuse color, we do this by interpolating between black and the base color based on the `metallic` value such that the diffuse color is closer to black the more metallic it is. Conversely, for the specular color, we interpolate such that the surface holds more of the `baseColor` the more metallic it is.
 
-### Final Color
+我们现在有漫反射和镜面反射的入射光和BRDF，但是我们需要使用迄今为止收集的所有信息来实际计算照明。这就是metallic和baseColor值有作用的地方。虽然baseColor规定了物体表面上点的固有颜色，但metallic值告诉我们在最终颜色计算中baseColor有多少表示为漫反射有多少表示为镜面反射。对于漫反射颜色，我们基于metallic值在黑色和基础颜色之间进行插值来实现这一点，metallic值越大使得漫反射颜色越接近黑色。相反，对于镜面颜色，我们进行插值，metallic值越大使得物体表面拥有更多的baseColor，而更具金属感。
+
+### Final Color  最终颜色
 
 Finally, we can compute the final color by summing the contributions of diffuse and specular components the color in the following manner:
 
+最终，我们可以通过下列方式对漫反射和镜面反射分量的颜色进行求和来计算最终颜色：
+
 `finalColor = (diffuseLight * diffuseColor) + (specularLight * (specularColor * brdf.x + brdf.y))`
 
-Appendix
+Appendix  附录
 ------------
 
 The core lighting equation this sample uses is the Schlick BRDF model from [An Inexpensive BRDF Model for Physically-based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf)
+
+本示例使用的核心照明方程是来自[An Inexpensive BRDF Model for Physically-based Rendering]的Schlick BRDF模型
 
 ```
 vec3 specContrib = F * G * D / (4.0 * NdotL * NdotV);
@@ -119,8 +127,14 @@ vec3 diffuseContrib = (1.0 - F) * diffuse;
 ```
 
 If you're familiar with implementing the phong model, you may think that the diffuse and specular contributions simply need to be summed up to obtain the final lighting. However, in the context of a BRDF, the diffuse and specular components are not accounting for the *energy* of the incident light, which can cause some confusion.
+
+如果您熟悉phong模型的实现，您可能会认为漫反射和镜面反射分量只需要简单计算即可获得最终的照明效果。但是，在BRDF的背景下，漫反射和镜面反射分量并不能解释入射光的能量，这会造成一些混淆。
 Using a BRDF, the diffuse and specular parts describe the *bidirectional reflectance*, which we have to scale by the *energy* received from the light in order to obtain the final intensity that reaches the eye of the viewer (as outlined in the respective [paper by Cook and Torrance](http://graphics.pixar.com/library/ReflectanceModel/).
+
+使用BRDF，漫反射和镜面反射部分描述了*双向反射*，我们必须通过从光线接收到的*能量*进行缩放，以获得到达观看者眼睛的最终强度（如[paper by Cook and Torrance]文中相应的概述）
 According to the basic cosine law (as described by [Lambert](https://archive.org/details/lambertsphotome00lambgoog)), the energy is computed using the dot product between the light's direction and the surface normal. Therefore, the final intensity that will be used for shading is computed as follows:
+
+根据基本余弦定律（如[Lambert]文中所述），使用光线方向和表面法线之间的点积来计算能量。因此，将用于进行颜色着色的最终强度计算如下：
 ```
 vec3 color = NdotL * u_LightColor * (diffuseContrib + specContrib);
 ```
@@ -128,7 +142,9 @@ vec3 color = NdotL * u_LightColor * (diffuseContrib + specContrib);
 Below here you'll find common implementations for the various terms found in the lighting equation.
 These functions may be swapped into pbr-frag.glsl to tune your desired rendering performance and presentation.
 
-### Surface Reflection Ratio (F)
+在这里您可以找到照明方程中各种术语的常见实现。这些函数可以应用到pbr-frag.glsl中来调整渲染性能和渲染效果。
+
+### Surface Reflection Ratio (F) 表面反射率（F）
 
 **Fresnel Schlick**
 Simplified implementation of fresnel from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.
@@ -140,7 +156,7 @@ vec3 specularReflection(PBRInfo pbrInputs)
 }
 ```
 
-### Geometric Occlusion (G)
+### Geometric Occlusion (G) 几何遮挡
 
 **Cook Torrance**
 Implementation from [A Reflectance Model for Computer Graphics](http://graphics.pixar.com/library/ReflectanceModel/) by Robert Cook and Kenneth Torrance,
