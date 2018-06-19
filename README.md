@@ -66,16 +66,23 @@ The overall structure of a material would then look something like this in glTF 
 ]
 ```
 
-Using Metallic-Roughness to Shade
+Using Metallic-Roughness to Shade  使用Metallic-Roughness来进行着色处理
 ----------------------------------
 
 Once we have read in these values and passed them into the fragment shader correctly, we need to compute the final color of each fragment. Without going too far into the theory behind PBR, this is how this demo application computes the color.
 
+一旦我们读入这些值并将它们正确传递到片段着色器中，我们需要计算每个片段的最终颜色。没有太深入PBR的理论，这个应用程序主要演示如何计算颜色。
+
 It is first important to choose a microfacet model to describe how light interacts with a surface. In this project, I use the [Cook-Torrance Model](https://web.archive.org/web/20160826022208/https://renderman.pixar.com/view/cook-torrance-shader) to compute lighting. However, there is a large difference between doing this based on lights within a scene versus an environment map. With discrete lights, we could just evaluate the BRDF with respect to each light and average the results to obtain the overall color, but this is not ideal if you want a scene to have complex lighting that comes from many sources.
 
-### Environment Maps
+首先最重要的是选择一种microfacet模型来描述光线如何与表面相互作用。在这个项目中，我使用[Cook-Torrance Model]模型来计算照明。然而，基于场景内的灯光进行渲染与基于环境贴图进行渲染两者差距很大。使用离散光源，我们可以对每个光源评估BRDF，并对结果进行平均以获得整体色彩，但如果您希望场景具有来自多个来源的复杂光照，则这并不理想。
+
+### Environment Maps  环境贴图
 
 This is where environment maps come in! Environment maps can be thought of as a light source that surrounds the entire scene (usually as an encompassing cube or sphere) and contributes to the lighting based on the color and brightness across the entire image. As you might guess, it is extremely inefficient to assess the light contribution to a single point on a surface from every visible point on the environment map. In offline applications, we would typically resort to using importance sampling within the render and just choose a predefined number of samples. However, as described in [Unreal Engine's course notes on real-time PBR](http://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf), we can reduce this to a single texture lookup by baking the diffuse and specular irradiance contributions of the environment map into textures. You could do this yourself as described in the course notes, but there is also a resource called [IBL Baker](http://www.derkreature.com/iblbaker/) that will create these textures for you. The diffuse irradiance can be stored in a cube map, however, we expect the sharpness of specular reflection to diminish as the roughness of the object increases. Because of this, the different amounts of specular irradiance can be stored in the mip levels of the specular cube map and accessed in the fragment shader based on roughness.
+
+这是环境贴图进来的地方！环境贴图可以被认为是围绕整个场景的光源（通常是立方体或球体），并且根据整个图像的颜色和亮度对光照做出贡献。正如您可能猜到的那样，从环境贴图上的每个可见点评估表面上单个点的光贡献效率非常低。在离线应用程序中，我们通常会在渲染中使用重要性采样，并选择预定义数量的采样。但是，如[Unreal Engine's course notes on real-time PBR]所述，我们可以将环境贴图的漫反射和镜面辐射贡献烘焙为纹理，通过单个纹理查找来提高效率。您可以按照课程笔记中所述自行完成此操作，但也有一个名为[IBL Baker]的资源，可以为您创建这些纹理。漫反射辐照度可以存储在立方体贴图中，但是，随着物体粗糙度的增加，我们预计镜面反射的清晰度会降低。因此，镜面辐照度可以存储在镜面立方体贴图的mip级别中，并根据粗糙度在片段着色器中进行访问。
+
 
 **Diffuse Front Face**
 
