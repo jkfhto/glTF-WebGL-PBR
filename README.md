@@ -216,6 +216,7 @@ float microfacetDistribution(PBRInfo pbrInputs)
 The following equations are commonly used models of the diffuse term of the lighting equation.
 
 以下方程式是光照方程中漫射项的常用模型。
+
 **Lambert**
 Implementation of diffuse from [Lambert's Photometria](https://archive.org/details/lambertsphotome00lambgoog) by Johann Heinrich Lambert
 
