@@ -22,12 +22,18 @@ Physically-Based Materials in glTF 2.0
 
 With the change from glTF 1.0 to glTF 2.0, one of the largest changes included core support for materials that could be used for physically-based shading. Part of this process involved chosing technically accurate, yet user-friendly, parameters for which developers and artists could use intuitively. This resulted in the introduction of the **Metallic-Roughness Material** to glTF. If you would like to read more about glTF, you can find the content at its [GitHub page](https://github.com/KhronosGroup/glTF), but I will take a bit of time to explain how this new material works.
 
+随着glTF 1.0标准到glTF 2.0标准的变化，最大的变化之一是对基于物理着色的材质的核心支持。这一过程的一部分涉及选择技术上准确，对用户友好的参数，开发人员和艺术家可以直观地使用这些参数。这导致了将Metallic-Roughness Material引入glTF。如果您想了解更多关于glTF的信息，您可以在其GitHub页面上找到这些内容，但是我会花一点时间来解释这种新材料是如何工作的。
+
 A surface using the Metallic-Roughness material is governed by three parameters:
-* `baseColor` - The inherent color attribute of a surface
-* `metallic` -  A float describing how metallic the surface is
-* `roughness` - A float describing how rough the surface is
+
+使用Metallic-Roughness 材质的表面由三个参数控制：
+* `baseColor` - The inherent color attribute of a surface  物体表面的基本颜色属性
+* `metallic` -  A float describing how metallic the surface is  描述物体表面金属属性的浮点数
+* `roughness` - A float describing how rough the surface is  描述物体表面粗糙程度的浮点数
 
 These parameters can be provided to the material in two ways. Either the parameters can be given constant values, which would dictate the shading of an entire mesh uniformly, or textures can be provided that map varying values over a mesh. In this project, all of the glTF files followed the latter case. It is important to note here that although `metallic` and `roughness` are separate parameters, they are provided as a single texture in which the `metallic` values are in the blue channel and the `roughness` values are in the green channel to save on space.
+
+这些参数可以通过两种方式提供给材质。要么参数可以是常量，这将导致整个网格采用统一的着色方式，也可以提供在网格上映射变化值的纹理。在这个项目中，所有的glTF文件都遵循后一种情况。这里需要注意的是，虽然金属和粗糙度是单独的参数，但它们是作为单一纹理提供的，其中金属值位于蓝色通道中，而粗糙度值位于绿色通道中从而节省空间。
 
 **Base Color of a Boombox**
 
@@ -39,7 +45,11 @@ These parameters can be provided to the material in two ways. Either the paramet
 
 Although these are the core parameters of the Metallic-Roughness material, often a user will want to provide additional maps for features such as normals, ambient occlusion, or emissiveness. Similarly to above, these are usually provided as a texture that corresponds to the parts of the mesh that have shifted normals, are occluded and/or are emissive, respectively. However, since these are not a part of the Metallic-Roughness material itself, they are provided as a separate portion to the material.
 
+虽然这些是Metallic-Roughness材质的核心参数，但用户往往希望为法线，环境遮挡或发射等特征提供附加的贴图。与上面类似，这些通常是作为纹理来提供的，这些纹理表示网格外观具有偏移法线，环境遮挡，发光度等属性。但是，由于这些不是Metallic-Roughness材质本身的一部分，它们作为材料的单独部分提供。
+
 The overall structure of a material would then look something like this in glTF 2.0:
+
+在glTF 2.0中，材质的整体结构会看起来像这样：
 
 ```
 "materials": [
