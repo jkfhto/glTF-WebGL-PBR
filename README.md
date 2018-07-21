@@ -96,7 +96,7 @@ This is where environment maps come in! Environment maps can be thought of as a 
 
 At this point, we can pick out the diffuse and specular incoming light from our environment map, but we still need to evaluate the BRDF at this point. Instead of doing this computation explicitly, we use a BRDF lookup table to find the BRDF value based on roughness and the viewing angle. It is important to note that this lookup table changes depending on which microfacet model we use! Since this project uses the Cook-Torrance model, we use the following texture in which the y-axis corresponds to the roughness and the x-axis corresponds to the dot product between the surface normal and viewing vector.
 
-此时，我们可以从环境贴图中获取漫反射和镜面反射的入射光，但我们仍然需要在此处评估BRDF。我们不使用明确的计算方法，而是使用BRDF查找表来查找基于粗糙度和视角的BRDF值。请注意，此查找表根据我们使用的microfacet模型而变化！由于该项目使用Cook-Torrance模型，因此我们使用以下纹理，其中y轴对应于粗糙度，x轴对应于曲面法线向量和视点方向向量之间的点积。
+此时，我们可以从环境贴图中获取漫反射和镜面反射的入射光，但我们仍然需要在此处评估BRDF。我们不使用明确的计算方法，而是使用BRDF查找表来查找基于粗糙度和视角的BRDF值。请注意，此查找表根据我们使用的微表面模型而变化！由于该项目使用Cook-Torrance模型，因此我们使用以下纹理，其中y轴对应于粗糙度，x轴对应于曲面法线向量和视点方向向量之间的点积。
 
 ![](textures/brdfLUT.png)
 
