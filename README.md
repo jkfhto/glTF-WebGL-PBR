@@ -147,7 +147,7 @@ These functions may be swapped into pbr-frag.glsl to tune your desired rendering
 ### Surface Reflection Ratio (F) 表面反射率（F）
 
 **Fresnel Schlick**
-Simplified implementation of fresnel from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.
+Simplified implementation of fresnel from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.<br>根据Christophe Schlick[An Inexpensive BRDF Model for Physically based Rendering]简化实现菲涅耳。
 
 ```
 vec3 specularReflection(PBRInfo pbrInputs)
@@ -169,7 +169,7 @@ float geometricOcclusion(PBRInfo pbrInputs)
 ```
 
 **Schlick**
-Implementation of microfacet occlusion from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.
+Implementation of microfacet occlusion from [An Inexpensive BRDF Model for Physically based Rendering](https://www.cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf) by Christophe Schlick.<br>根据Christophe Schlick[An Inexpensive BRDF Model for Physically based Rendering]简化实现微表面遮挡。
 
 ```
 float geometricOcclusion(PBRInfo pbrInputs)
