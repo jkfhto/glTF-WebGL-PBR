@@ -128,10 +128,10 @@ vec3 diffuseContrib = (1.0 - F) * diffuse;
 
 If you're familiar with implementing the phong model, you may think that the diffuse and specular contributions simply need to be summed up to obtain the final lighting. However, in the context of a BRDF, the diffuse and specular components are not accounting for the *energy* of the incident light, which can cause some confusion.
 
-如果您熟悉phong模型的实现，您可能会认为漫反射和镜面反射分量只需要简单计算即可获得最终的照明效果。但是，在BRDF的背景下，漫反射和镜面反射分量并不能解释入射光的能量，这会造成一些混淆。
+如果您熟悉phong模型的实现，您可能会认为漫反射和镜面反射分量只需要简单计算即可获得最终的照明效果。但是，在BRDF的背景下，漫反射和镜面反射分量并不能解释入射光的能量，这会造成一些混淆。<br><br>
 Using a BRDF, the diffuse and specular parts describe the *bidirectional reflectance*, which we have to scale by the *energy* received from the light in order to obtain the final intensity that reaches the eye of the viewer (as outlined in the respective [paper by Cook and Torrance](http://graphics.pixar.com/library/ReflectanceModel/).
 
-使用BRDF，漫反射和镜面反射部分描述了*双向反射*，我们必须通过从光线接收到的*能量*进行缩放，以获得到达观看者眼睛的最终强度（如[paper by Cook and Torrance]文中相应的概述）
+使用BRDF，漫反射和镜面反射部分描述了*双向反射*，我们必须通过从光线接收到的*能量*进行缩放，以获得到达观看者眼睛的最终强度（如[paper by Cook and Torrance]文中相应的概述）<br><br>
 According to the basic cosine law (as described by [Lambert](https://archive.org/details/lambertsphotome00lambgoog)), the energy is computed using the dot product between the light's direction and the surface normal. Therefore, the final intensity that will be used for shading is computed as follows:
 
 根据基本余弦定律（如[Lambert]文中所述），使用光线方向和表面法线之间的点积来计算能量。因此，将用于进行颜色着色的最终强度计算如下：
