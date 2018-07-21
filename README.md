@@ -75,7 +75,7 @@ Once we have read in these values and passed them into the fragment shader corre
 
 It is first important to choose a microfacet model to describe how light interacts with a surface. In this project, I use the [Cook-Torrance Model](https://web.archive.org/web/20160826022208/https://renderman.pixar.com/view/cook-torrance-shader) to compute lighting. However, there is a large difference between doing this based on lights within a scene versus an environment map. With discrete lights, we could just evaluate the BRDF with respect to each light and average the results to obtain the overall color, but this is not ideal if you want a scene to have complex lighting that comes from many sources.
 
-首先最重要的是选择一种microfacet模型来描述光线如何与表面相互作用。在这个项目中，我使用[Cook-Torrance Model]模型来计算照明。然而，基于场景内的灯光进行渲染与基于环境贴图进行渲染两者差距很大。使用离散光源，我们可以对每个光源评估BRDF，并对结果进行平均以获得整体色彩，但如果您希望场景具有来自多个来源的复杂光照，则这并不理想。
+首先选择微平面模型来描述光与表面的相互作用是非常重要的。在这个项目中，我使用[Cook-Torrance Model]模型来计算照明。然而，基于场景内的灯光进行渲染与基于环境贴图进行渲染两者差距很大。使用离散光源，我们可以对每个光源评估BRDF，并对结果进行平均以获得整体色彩，但如果您希望场景具有来自多个来源的复杂光照，则这并不理想。
 
 ### Environment Maps  环境贴图
 
